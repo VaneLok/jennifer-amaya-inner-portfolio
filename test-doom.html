@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOOM - Working Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: monospace;
+            overflow: hidden;
+        }
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+        }
+        #status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 16px;
+            text-align: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer"></div>
+    <div id="status">Testing DOOM bundle...</div>
+    
+    <script>
+        const status = document.getElementById('status');
+        const container = document.getElementById('gameContainer');
+        
+        // First test if doom.jsdos exists
+        fetch('doom.jsdos')
+            .then(response => {
+                console.log('doom.jsdos fetch response:', response);
+                if (response.ok) {
+                    status.textContent = 'DOOM bundle found, loading JS-DOS...';
+                    loadJSDOS();
+                } else {
+                    status.textContent = 'DOOM bundle not found (404)';
+                    console.error('doom.jsdos not found:', response.status);
+                }
+            })
+            .catch(error => {
+                status.textContent = 'Error checking DOOM bundle';
+                console.error('Error fetching doom.jsdos:', error);
+            });
+        
+        function loadJSDOS() {
+            // Load JS-DOS dynamically
+            const script = document.createElement('script');
+            script.src = 'https://js-dos.com/8.3/current/js-dos.js';
+            script.onload = () => {
+                status.textContent = 'JS-DOS loaded, initializing...';
+                initDoom();
+            };
+            script.onerror = () => {
+                status.textContent = 'Failed to load JS-DOS';
+                console.error('Failed to load JS-DOS');
+            };
+            document.head.appendChild(script);
+        }
+        
+        function initDoom() {
+            try {
+                status.textContent = 'Initializing DOOM...';
+                
+                Dos(container, {
+                    wdosboxUrl: "https://js-dos.com/8.3/current/wdosbox.js"
+                }).ready((fs, main) => {
+                    console.log('JS-DOS ready');
+                    status.textContent = 'Extracting DOOM bundle...';
+                    
+                    fs.extract("doom.jsdos").then(() => {
+                        console.log('DOOM bundle extracted successfully');
+                        status.style.display = 'none';
+                        main(["-c", "doom.exe"]);
+                    }).catch((error) => {
+                        console.error('Failed to extract DOOM bundle:', error);
+                        status.textContent = 'Failed to extract DOOM bundle: ' + error.message;
+                    });
+                }).catch((error) => {
+                    console.error('JS-DOS initialization failed:', error);
+                    status.textContent = 'JS-DOS initialization failed: ' + error.message;
+                });
+            } catch (error) {
+                console.error('Error in initDoom:', error);
+                status.textContent = 'Error initializing: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
