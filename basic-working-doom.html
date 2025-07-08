@@ -38,11 +38,31 @@
     </div>
 
     <script>
-      Dos(document.getElementById("jsdos"), {
-        wdosboxUrl: "https://js-dos.com/8.3/current/wdosbox.js"
-      }).ready((fs, main) => {
-        main(["doom.jsdos"]);
-      });
+      const gameContainer = document.getElementById("jsdos");
+      
+      // Initialize JS-DOS with better error handling
+      try {
+        Dos(gameContainer, {
+          wdosboxUrl: "https://js-dos.com/8.3/current/wdosbox.js"
+        }).ready((fs, main) => {
+          console.log("JS-DOS ready, loading DOOM...");
+          
+          // Load the doom.jsdos bundle
+          fs.extract("doom.jsdos").then(() => {
+            console.log("DOOM bundle extracted, starting game...");
+            main(["-c", "doom.exe"]);
+          }).catch((error) => {
+            console.error("Failed to extract DOOM bundle:", error);
+            gameContainer.innerHTML = '<div style="color: #ff0000; text-align: center; padding-top: 50px;">Failed to load DOOM bundle</div>';
+          });
+        }).catch((error) => {
+          console.error("JS-DOS initialization failed:", error);
+          gameContainer.innerHTML = '<div style="color: #ff0000; text-align: center; padding-top: 50px;">Failed to initialize JS-DOS</div>';
+        });
+      } catch (error) {
+        console.error("Script error:", error);
+        gameContainer.innerHTML = '<div style="color: #ff0000; text-align: center; padding-top: 50px;">Script error occurred</div>';
+      }
     </script>
 </body>
 </html>
