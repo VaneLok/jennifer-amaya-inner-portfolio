@@ -13,7 +13,7 @@ const PaseoVeneciaProject: React.FC<PaseoVeneciaProjectProps> = ({ onBackClick }
     return (
         <div className="site-page-content">
             <h1>Paseo Venecia</h1>
-            <h3>Soyapango Commercial Center</h3>
+            <h3>Commercial Center</h3>
             <h4>Soyapango, El Salvador</h4>
             <br />
             
@@ -30,7 +30,7 @@ const PaseoVeneciaProject: React.FC<PaseoVeneciaProjectProps> = ({ onBackClick }
             <div style={styles.imageContainer}>
                 <img src={pase1} alt="Paseo Venecia commercial center overview" style={styles.image} />
                 <p style={styles.caption}>
-                    <b>Figure 1:</b> <em>Overview of the Soyapango Commercial Center design</em>
+                    <b>Figure 1:</b> <em>Overview of the Commercial Center design</em>
                 </p>
             </div>
 
