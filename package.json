@@ -18,7 +18,7 @@
         "express": "^4.17.3",
         "framer-motion": "^6.3.1",
         "gsap": "^3.9.1",
-        "ip": "^1.1.5",
+        "ip": "^2.0.1",
         "lil-gui": "^0.16.0",
         "nodemailer": "^6.7.3",
         "portfinder-sync": "0.0.2",
