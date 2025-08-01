@@ -15,7 +15,7 @@
         "camera-controls": "^1.34.2",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
-        "express": "^4.17.3",
+        "express": "^5.1.0",
         "framer-motion": "^6.3.1",
         "gsap": "^3.9.1",
         "ip": "^1.1.5",
