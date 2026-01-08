@@ -1,24 +1,39 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
+import { fileURLToPath, URL } from 'node:url'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/jennifer-amaya-inner-portfolio/',
+  root: 'src',
+  publicDir: '../static',
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
+    emptyOutDir: true,
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'three': ['three'],
+          'react': ['react', 'react-dom'],
+          'animation': ['@tweenjs/tween.js', 'gsap'],
+        }
+      }
+    }
   },
   server: {
-    headers: {
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
-    },
-    fs: {
-      allow: ['..'],
+    port: 3000,
+    host: true,
+    open: true,
+  },
+  assetsInclude: ['**/*.glsl', '**/*.vs', '**/*.fs', '**/*.vert', '**/*.frag'],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  assetsInclude: ['**/*.jsdos', '**/*.wasm'],
   optimizeDeps: {
-    exclude: ['js-dos'],
+    include: ['three', 'react', 'react-dom', '@tweenjs/tween.js', 'gsap', 'three/examples/jsm/renderers/CSS3DRenderer.js']
   },
 })
